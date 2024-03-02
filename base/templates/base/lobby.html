@@ -1,0 +1,63 @@
+{% extends "base/main.html" %}
+{% load static %}
+
+{% block content %}
+
+<main>
+    <section id="form-container">
+        <img id="logo" src="{% static 'images/myicon.png' %}" />
+
+        <div id="welcome-message">
+            <h1>Welcome to Intelli Meet</h1>
+            <p>A video conferencing application powered with computer vision</p>
+        </div>
+
+        <form id="form">
+            <div class="form-field">
+                <label for="room">Room</label>
+                <input type="text" name="room" style="text-transform:uppercase ;" required >
+            </div>
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" name="email" required >
+            </div>
+            <div class="form-field">
+                <label for="username">Name</label>
+                <input type="text" name="username" required >
+            </div>
+
+            <div class="form-field">
+                <input type="submit" value="Join Stream">
+            </div>
+        </form>
+    </section>
+
+</main>
+
+<script type="text/javascript">
+    let form = document.getElementById('form')
+    let handleSubmit = async (e) => {
+        e.preventDefault()
+        let room = e.target.room.value.toUpperCase()
+        let name = e.target.username.value
+        let email = e.target.email.value
+
+        let response = await fetch(`/get_token/?channel=${room}`)
+        let data = await response.json()
+
+        let UID = data.uid
+        let token = data.token
+
+        sessionStorage.setItem('UID', UID)
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('room', room)
+        sessionStorage.setItem('name', name)
+        sessionStorage.setItem('email', email)
+
+        window.open('/room/', '_self')
+    }
+
+    form.addEventListener('submit', handleSubmit)
+</script>
+
+{% endblock content %}

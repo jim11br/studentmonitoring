@@ -1,0 +1,74 @@
+{% extends "base/main.html" %}
+{% load static %}
+{% block content %}
+
+<main>
+    <!-- main panel-->
+    <div id="main-panel">
+        <section id="room-name-wrapper">
+            <p>Room Name: <span id="room-name"></span></p>
+        </section>
+    
+        <section id="room-name-wrapper">
+            <p>Prediction: <span id="result-name"></span></p>
+        </section>
+    
+        <section id="video-streams">
+            {% comment %} <div class="video-container" id="user-container-1">
+                <div class="username-wrapper"><span class="user-name">member_name</span></div>
+                <video class="video-player" id="user-1" autoplay></video>
+            </div>
+
+            <div class="video-container" id="user-container-2">
+                <div class="username-wrapper"><span class="user-name">member_name</span></div>
+                <video class="video-player" id="user-2" autoplay></video>
+            </div>
+
+            <div class="video-container" id="user-container-3">
+                <div class="username-wrapper"><span class="user-name">member_name</span></div>
+                <video class="video-player" id="user-3" autoplay></video>
+            </div> {% endcomment %}
+
+        </section>
+    
+        <section id="controls-wrapper">
+            <div class="icon-wrapper">
+                <img class="control-icon" id="mic-btn" src="{% static 'images/microphone.svg' %}" />
+            </div>
+    
+            <div class="icon-wrapper">
+                <img class="control-icon" id="camera-btn" src="{% static 'images/video.svg' %}" />
+            </div>
+    
+            <div class="icon-wrapper">
+                <img class="control-icon" id="leave-btn" src="{% static 'images/leave.svg' %}" />
+            </div>
+        </section>
+    </div>
+
+    <!-- side panel-->
+    <div id="side-panel">
+        <h2>Student Monitoring</h2>
+        <table id="dynamic-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Curious</th>
+                    <th>Confusion</th>
+                    <th>Boredom</th>
+                    <th>Hopefullness</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- dynamic table-->
+            </tbody>
+        </table>
+    </div>
+
+</main>
+<script src="{% static 'assets/AgoraRTC_N-4.19.1.js' %}"></script>
+<script src="{% static 'js/face-api.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/streams.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{% endblock content %}

@@ -1,0 +1,258 @@
+:root{
+    --shaddow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+body {
+    background-color: rgba(232, 233, 239, 1);
+}
+
+
+/* ------- LOBBY STYLING -------- */
+
+#logo {
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+}
+
+#form-container{
+    width: 800px;
+    box-shadow: var(--shaddow);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    
+}
+
+#welcome-message{
+    text-align: center;
+    margin: 20px;
+  
+}
+
+#welcome-message h1{
+    font-size: 36px;
+}
+
+#welcome-message p{
+    font-size: 16px;
+    margin-bottom: 40px; 
+}
+
+.form-field{
+    margin: 20px;
+}
+
+.form-field label{
+    font-size: 16px;
+    line-height: 1.7em;
+}
+
+.form-field input {
+    width: 100%;
+    border: 2px solid rgba(198, 202, 219, 1);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form-field input[type='submit'] {
+    background-color: rgba(75, 93, 172, 1);
+    border: none;
+    color: #fff;
+}
+
+.form-field label {
+    font-size: 20px;
+}
+
+.form-field input[type="submit"] {
+    height: 45px;
+    margin-top: 20px;
+}
+
+
+@media screen and (max-width:450px){
+    #form-container{
+        width: 95%;
+    }
+
+    #welcome-message{
+        font-size: 24px;
+    }
+}
+
+/* ------- ROOM STYLING -------- */
+
+#room-name-wrapper{
+    text-align: center;
+    font-size: 18px;
+}
+
+#room-name-wrapper p{
+    margin: 10px;
+}
+
+#video-streams{
+    display: grid;
+    /* height: 85vh; */
+    grid-gap: 10px;
+    width: 75%;
+    margin: 0 auto;
+
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+}
+
+.video-container{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    border: 1px solid rgb(75, 95, 172);
+    border-radius: 5px;
+    margin: 2px;
+    background-color: rgba(198, 202, 219, 1);
+    position: relative;
+}
+
+.video-player{
+    height: 100%;
+    width: 100%;
+}
+
+.video-player > * {
+    border-radius: 5px;
+}
+
+.username-wrapper{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* @media screen and (max-width:1650px) {
+    .video-container{
+        flex-basis: 300px;
+        min-height: 200px;
+    }
+} */
+
+/* ---- BUTTONS ------ */
+
+#controls-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    column-gap: 1em;
+    position: fixed;
+    bottom: 20px;
+}
+
+.control-icon{
+    height: 20px;
+    width: 20px;
+    box-shadow: var(--shaddow);
+    background-color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#leave-btn{
+    background-color: rgb(255, 80, 80, 1);
+}
+
+/* ------------- table ------------- */
+
+#side-panel {
+    float: right;
+    top: 0;
+    right: 0;
+    width: 25%; /* Adjust the width as needed */
+    height: 100%; /* Take full height of the viewport */
+    overflow-y: auto; /* Add vertical scroll if content exceeds the height */
+}
+
+#main-panel {
+    width: 75%;
+    float: left;
+}
+
+#dynamic-table {
+    border-collapse: collapse;
+    margin: 0 0;
+    font-size: 1.2em;
+}
+
+#dynamic-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+#dynamic-table th,
+#dynamic-table td {
+    padding: 12px 8px;
+    text-align: center;
+}
+
+#dynamic-table tbody tr{
+    border-bottom: 1px solid #000000;
+}
+
+#dynamic-table-2 {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1.3em;
+    min-width: 1000px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#dynamic-table-2 thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+#dynamic-table-2 th,
+#dynamic-table-2 td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+#dynamic-table-2 tbody tr{
+    border-bottom: 1px solid #009879;
+}
+
+#dynamic-table-2 tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+#dynamic-table-2 tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+#summary-title{
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
