@@ -24,4 +24,4 @@ Before running the application, make sure you have the following dependencies in
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/innocentmchry/webrtcdjango.git
+   https://github.com/innocentmchry/studentmonitoring.git
