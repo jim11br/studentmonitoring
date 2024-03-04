@@ -313,7 +313,6 @@ let leaveAndRemoveLocalStream = async () => {
 
     if(ADMIN){       
         await calculateSummary()
-        window.open('/summary/', '_self')
     }
     else{
         window.open('/','_self')
@@ -326,13 +325,7 @@ let calculateSummary = async () => {
             type: 'GET',
             url: '/calculate_summary/',
             success: async (response) => {
-                // var tableBody = $('#dynamic-table-2 tbody');
-                // tableBody.empty();
-                // for (var key in response.users){
-                //     var temp = "<tr><td>"+response.users[key].name+"</td><td>"+response.users[key].curious+"</td><td>"+response.users[key].confusion+"</td><td>"+response.users[key].boredom+"</td><td>"+response.users[key].hopefullness+"</td></tr>"
-                //     tableBody.append(temp)
-                // }
-                console.log("success")
+                window.open('/summary/', '_self')
             },
             error: async(response) => {
                 alert("No Data Found");
