@@ -186,16 +186,22 @@ def predictor(request):
     
     emotion = ""
     
-    if prediction_v[0][0] > 0:
-        if prediction_a[0][0] > 0: 
-            emotion = "curious"
+    predicted_valence = prediction_v[0][0]
+    predicted_arousal = prediction_a[0][0]
+    
+    if -0.138 <= predicted_valence <= 0.138 and -0.117 <= predicted_arousal <= 0.117:
+        emotion = "neutral"
+    else:            
+        if predicted_valence > 0:
+            if predicted_arousal > 0: 
+                emotion = "curious"
+            else:
+                emotion = "hopefullness"
         else:
-            emotion = "hopefullness"
-    else:
-        if prediction_a[0][0] > 0:
-            emotion = "confusion"
-        else:
-            emotion = "boredom"
+            if predicted_arousal > 0:
+                emotion = "confusion"
+            else:
+                emotion = "boredom"
     
     student_emotion, created = Student_Emotion.objects.get_or_create(uid=uid)
 
@@ -213,6 +219,8 @@ def predictor(request):
         student_emotion.boredom += 1
     elif emotion == 'hopefullness':
         student_emotion.hopefullness += 1
+    elif emotion == 'neutral':
+        student_emotion.neutral += 1
     else:
         pass
 
@@ -244,17 +252,19 @@ def calculateSummary(request):
     summary_objects = []
     
     for student_emotion in student_emotions:
-        total_emotions = student_emotion.curious + student_emotion.confusion + student_emotion.boredom + student_emotion.hopefullness
+        total_emotions = student_emotion.curious + student_emotion.confusion + student_emotion.boredom + student_emotion.hopefullness + student_emotion.neutral
         curious_percentage = (student_emotion.curious / total_emotions) * 100
         confusion_percentage = (student_emotion.confusion / total_emotions) * 100
         boredom_percentage = (student_emotion.boredom / total_emotions) * 100
         hopefullness_percentage = (student_emotion.hopefullness / total_emotions) * 100
+        neutral_percentage = (student_emotion.neutral / total_emotions) * 100
         summary_object = Summary(
             name=student_emotion.name,
             curious=f"{curious_percentage:.2f}%",
             confusion=f"{confusion_percentage:.2f}%",
             boredom=f"{boredom_percentage:.2f}%",
-            hopefullness=f"{hopefullness_percentage:.2f}%"
+            hopefullness=f"{hopefullness_percentage:.2f}%",
+            neutral=f"{neutral_percentage:.2f}%"
         )
         summary_objects.append(summary_object)
 

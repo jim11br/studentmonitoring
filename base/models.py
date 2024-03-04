@@ -38,6 +38,7 @@ class Student_Emotion(models.Model):
     confusion = models.IntegerField(default=0)
     boredom = models.IntegerField(default=0)
     hopefullness = models.IntegerField(default=0)
+    neutral = models.IntegerField(default=0)
     
     def __str__(self):
         return self.uid
@@ -48,6 +49,7 @@ class Summary(models.Model):
     confusion = models.CharField(max_length=5)
     boredom = models.CharField(max_length=5)
     hopefullness = models.CharField(max_length=5)
+    neutral = models.CharField(max_length=5)
     
     def __str__(self):
         return self.name

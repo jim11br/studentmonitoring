@@ -123,7 +123,7 @@ let updateEmotion = () => {
             var tableBody = $('#dynamic-table tbody');
             tableBody.empty();
             for (var key in response.users){
-                var temp = "<tr><td>"+response.users[key].name+"</td><td>"+response.users[key].curious+"</td><td>"+response.users[key].confusion+"</td><td>"+response.users[key].boredom+"</td><td>"+response.users[key].hopefullness+"</td></tr>"
+                var temp = "<tr><td>"+response.users[key].name+"</td><td>"+response.users[key].curious+"</td><td>"+response.users[key].confusion+"</td><td>"+response.users[key].boredom+"</td><td>"+response.users[key].hopefullness+"</td><td>"+response.users[key].neutral+"</td></tr>"
                 tableBody.append(temp)
             }
         },
