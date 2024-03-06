@@ -4,6 +4,7 @@
 
 body {
     background-color: rgba(232, 233, 239, 1);
+    /* background-color: #EAF6F6; */
 }
 
 
@@ -214,7 +215,7 @@ body {
     border-bottom: 1px solid #000000;
 }
 
-#dynamic-table-2 {
+.dynamic-table-2 {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 1.3em;
@@ -226,33 +227,144 @@ body {
     margin-right: auto;
 }
 
-#dynamic-table-2 thead tr {
+.dynamic-table-2 thead tr {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
     font-weight: bold;
 }
 
-#dynamic-table-2 th,
-#dynamic-table-2 td {
+.dynamic-table-2 th,
+.dynamic-table-2 td {
     padding: 12px 15px;
     text-align: center;
 }
 
-#dynamic-table-2 tbody tr{
+.dynamic-table-2 tbody tr{
     border-bottom: 1px solid #009879;
 }
 
-#dynamic-table-2 tbody tr:nth-of-type(even) {
+.dynamic-table-2 tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-#dynamic-table-2 tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+.dynamic-table-2 tbody tr:last-of-type {
+    border-bottom: 0.5px solid #009879;
 }
+
+/* --- First Component --- */
 
 #summary-title{
     text-align: center;
     font-size: 2em;
     font-weight: bold;
+}
+
+#myChartDiv {
+    width: 25%;
+    margin: 50px;
+}
+
+#myChartDiv2 {
+    width: 50%;
+    margin: 50px;
+}
+
+.firstComponent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Second Component --- */
+
+.X{
+    margin: auto;
+    padding: 1% 2%;
+    max-width: 1440px;
+    border-radius: 5px;
+    /* background: #EAF6F6; */
+    background: rgba(232, 233, 239, 1);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0, .3);
+}
+.listTitle{
+    text-align: center;
+    /* font-family: 'Baloo Tamma', cursive; */
+}
+li{
+    color: #2c3e50;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: justify;
+    letter-spacing: 1px;
+    font-family: 'Raleway', serif;
+}
+/*SG = style grid*/
+.SG{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.SG .sgLi{
+    min-width: 19%;
+    margin: 2% .35%;
+    display: inline-flex;
+    box-shadow: 0 2px 4px rgba(0,0,0, .2);
+}
+.SG .sgLi:hover{
+    box-shadow:0 5px 10px rgba(0,0,0,.15);}
+.SG .box{
+    width: 100%;
+    height: 100vh;
+    padding: 1% 2%;
+    background: #F5F7F8;
+    min-height: 200px;
+    max-height: 220px;
+    box-sizing: border-box;
+}
+/*Styles */
+.df .s1 .s2 .s3 .s4{list-style-type: decimal;}
+
+.scrollable-content {
+    max-height: calc(100% - 100px);
+    overflow-y: auto;
+}
+
+/* --- Third Component  --- */
+
+.usersOfThirdComponent {
+    display: flex;
+}
+
+.pieChart {
+    width: 20%;
+    margin: auto
+}
+
+.scatterChart {
+    width: 25%;
+    margin: auto
+}
+
+.namesOfThirdComponent {
+    margin: auto auto;
+}
+
+.usersOfThirdComponent {
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 1% 2%;
+    max-width: 1440px;
+    border-radius: 5px;
+    /* background: #EAF6F6; */
+    background: rgba(232, 233, 239, 1);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0, .3);
+}
+
+.usersOfFourthComponent {
+    display: flex;
+}
+
+.namesOfFourthComponent {
+    margin: auto auto;
 }

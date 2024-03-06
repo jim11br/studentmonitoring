@@ -20,6 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import cv2
+from django.db.models import Sum
 
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -206,10 +207,10 @@ def predictor(request):
     student_emotion, created = Student_Emotion.objects.get_or_create(uid=uid)
 
     # write a query to get name 
-    
-    if not student_emotion.name:
-        room_member = get_object_or_404(RoomMember, uid=uid)
-        student_emotion.name = room_member.name
+   
+    room_member = get_object_or_404(RoomMember, uid=uid)
+    name = room_member.name
+    student_emotion.name = name
     
     if emotion == 'curious':
         student_emotion.curious += 1
@@ -227,8 +228,9 @@ def predictor(request):
     student_emotion.save()
     
     
-    # st = Status(uid=uid, emotion=emotion)
-    # st.save()
+    st = Status(uid=uid, name=name, valence=predicted_valence, arousal=predicted_arousal, predicted_emotion=emotion)
+    st.save()
+    
     # os.remove(image_path)
     # form.delete()
 
@@ -260,11 +262,11 @@ def calculateSummary(request):
         neutral_percentage = (student_emotion.neutral / total_emotions) * 100
         summary_object = Summary(
             name=student_emotion.name,
-            curious=f"{curious_percentage:.2f}%",
-            confusion=f"{confusion_percentage:.2f}%",
-            boredom=f"{boredom_percentage:.2f}%",
-            hopefullness=f"{hopefullness_percentage:.2f}%",
-            neutral=f"{neutral_percentage:.2f}%"
+            curious=round(curious_percentage, 2),
+            confusion=round(confusion_percentage, 2),
+            boredom=round(boredom_percentage, 2),
+            hopefullness=round(hopefullness_percentage, 2),
+            neutral=round(neutral_percentage, 2)
         )
         summary_objects.append(summary_object)
 
@@ -272,3 +274,104 @@ def calculateSummary(request):
 
     return JsonResponse({})
 
+def loadSummary2(request):
+    return render(request, 'base/summary2.html')
+
+def calculateFirstComponent(request):
+    totals = Summary.objects.aggregate(
+        total_curious=Sum('curious'),
+        total_confusion=Sum('confusion'),
+        total_boredom=Sum('boredom'),
+        total_hopefullness=Sum('hopefullness'),
+        total_neutral=Sum('neutral'),
+    )
+    
+    total_records = Summary.objects.count()
+    
+    labels = ['Curious', 'Confused', 'Bored','Hopefull','Neutral']
+    percentage = [totals['total_curious'] / total_records, totals['total_confusion'] / total_records, totals['total_boredom'] / total_records, totals['total_hopefullness'] / total_records, totals['total_neutral'] / total_records]
+    context = {'labels': labels, 'data': percentage}
+    return JsonResponse(context)
+
+# def calculateSecondComponent(request):
+#     pass
+
+def calculateSecondComponent(request):        
+    curious_ranking = list(Summary.objects.all().order_by('-curious').values_list('name', flat=True))
+    confused_ranking = list(Summary.objects.all().order_by('-confusion').values_list('name', flat=True))
+    bored_ranking = list(Summary.objects.all().order_by('-boredom').values_list('name', flat=True))
+    hopefull_ranking = list(Summary.objects.all().order_by('-hopefullness').values_list('name', flat=True))
+    neutral_ranking = list(Summary.objects.all().order_by('-neutral').values_list('name', flat=True))
+    
+    # ranking_length = len(curious_ranking)
+
+    # # for rank, (curious, confused, bored, hopefull, neutral) in enumerate(zip(curious_ranking, confused_ranking, bored_ranking, hopefull_ranking, neutral_ranking), start=1):
+    # #     ranking_instance = Ranking(
+    # #         rank=rank,
+    # #         curious_person=curious,
+    # #         confused_person=confused,
+    # #         bored_person=bored,
+    # #         hopefull_person=hopefull,
+    # #         neutral_person=neutral
+    # #     )
+    # #     ranking_instance.save()
+    # #     if rank == ranking_length:
+    # #         break
+    
+    # ranking_data = []
+
+    # for rank, (curious, confused, bored, hopefull, neutral) in enumerate(zip(curious_ranking, confused_ranking, bored_ranking, hopefull_ranking, neutral_ranking), start=1):
+    #     ranking_data.append({
+    #         'rank': rank,
+    #         'curious_person': curious,
+    #         'confused_person': confused,
+    #         'bored_person': bored,
+    #         'hopefull_person': hopefull,
+    #         'neutral_person': neutral
+    #     })
+    #     if rank == ranking_length:
+    #         break
+
+    return JsonResponse({'curious_person':curious_ranking, 'confused_person': confused_ranking, 'bored_person': bored_ranking, 'hopefull_person': hopefull_ranking, 'neutral_person': neutral_ranking})
+
+def calculateThirdComponent(request):
+    student_emotions = Student_Emotion.objects.all()
+    
+    rows_list = []
+    
+    for student_emotion in student_emotions:
+        row_list = [
+            student_emotion.name,
+            student_emotion.uid,
+            student_emotion.curious,
+            student_emotion.confusion,
+            student_emotion.boredom,
+            student_emotion.hopefullness,
+            student_emotion.neutral,
+        ]
+        rows_list.append(row_list)
+        
+    print(rows_list)
+    
+    
+    status = Status.objects.all()
+    print(status)
+    dict = {}
+    for statu in status:
+        values = []
+        if statu.uid not in dict.keys():
+            values = [{'x': statu.valence, 'y': statu.arousal}]
+            dict[statu.uid] = values
+        else:
+            values = dict[statu.uid]
+            values.append({'x': statu.valence, 'y': statu.arousal})
+            dict[statu.uid] = values
+    
+    
+    
+        
+    return JsonResponse({'rows_list': rows_list, 'data': dict})
+
+def calculateFourthComponent(request):
+    print('fourth component accessed')
+    return JsonResponse({})

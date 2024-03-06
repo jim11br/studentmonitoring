@@ -1,0 +1,220 @@
+console.log('Summary.js is executing!');
+
+fetch('/calculate_first_component/')
+  .then(response => response.json())
+  .then(data => {
+    const ctx = document.getElementById('myChart');
+    
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Percentage',
+          data: data.data,
+          borderWidth: 1
+        }]
+      },
+    });
+
+
+const ctx2 = document.getElementById('myChart2');
+
+
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: data.labels,
+    datasets: [{
+      label: 'Percentage wise distribution',
+      data: data.data,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(255, 205, 86, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(54, 162, 235, 0.8)'
+      ],
+      borderColor: [
+        'rgb(255, 99, 132)',
+        'rgb(255, 159, 64)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(54, 162, 235)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+})
+.catch(error => {
+console.error('Error fetching data:', error);
+});
+
+
+
+$.ajax({
+    type:'GET',
+    url: '/calculate_second_component/',
+    success: async (response) => {
+        var curiousList = $('.df');
+        var confusedList = $('.s1');
+        var boredList = $('.s2');
+        var hopefullList = $('.s3');
+        var neutralList = $('.s4');
+
+        response.curious_person.forEach(item => myFunction(item, curiousList))
+        response.confused_person.forEach(item => myFunction(item, confusedList))
+        response.bored_person.forEach(item => myFunction(item, boredList))
+        response.hopefull_person.forEach(item => myFunction(item, hopefullList))
+        response.neutral_person.forEach(item => myFunction(item, neutralList))
+
+        function myFunction(item, myListClass) {
+          myListClass.append(`<li>${item}</li>`);
+        }
+    },
+    error: async(response) => {
+        alert("No Data Found");
+    }
+})
+
+
+$.ajax({
+  type:'GET',
+  url: '/calculate_third_component/',
+  success: async (response) => {
+      
+      labels = ['Curious', 'Confused', 'Bored', 'Hopefull','Neutral']
+
+      // console.log('rows_list is:')
+      // console.log(response.rows_list)
+      // console.log('response data is: ')
+      // console.log(response.data)
+
+      for(i = 0; i < response.rows_list.length; i++){
+        charPieId = `charPieChart${i}`
+        charScatterId = `charScatterChart${i}`
+
+
+        let components1 = `<div class="usersOfThirdComponent">
+                            <div class="namesOfThirdComponent"><h3>${response.rows_list[i][0]}</h3></div>
+                            <div class="pieChart">
+                                <canvas id="${charPieId}"></canvas>
+                            </div>
+                            <div class="scatterChart">
+                                <canvas id="${charScatterId}"></canvas>
+                            </div>
+                          </div>`
+
+        document.getElementById('thirdComponent').insertAdjacentHTML('beforeend', components1)
+
+        createUserPieChart(charPieId, i, labels, response.rows_list)
+        createUserScatterChart(charScatterId, response.rows_list[i][1], response.data)
+
+
+      }           
+           
+  },
+  error: async(response) => {
+      alert("No Data Found");
+  }
+})
+
+$.ajax({
+  type:'GET',
+  url: '/calculate_fourth_component/',
+  success: async (response) => {
+      console.log(response)
+  },
+  error: async(response) => {
+      alert("No Data Found");
+  }
+})
+
+
+
+let createUserPieChart = (id, user, labels, rows) => {
+  const ctx = document.getElementById(id);
+  const config = {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Percentage',
+        data: rows[user].slice(2),
+        borderWidth: 1
+      }]
+    },
+  }
+  new Chart(ctx, config);
+}
+
+
+
+
+
+
+let createUserScatterChart = (id, uid, responseData) => {
+
+  const ctx = document.getElementById(id);
+  const data = {
+    datasets: [{
+      label: 'Valence Arousal Scatter Plot',
+      data: responseData[uid],
+      backgroundColor: 'rgb(255, 99, 132)'
+    }],
+  };
+
+  const config = {
+    type: 'scatter',
+    data: data,
+    options: {
+      scales: {
+        x: {
+          grid: {
+              drawBorder: false,
+              color: (context) => {
+                if(context.tick.value === 0){
+                  return 'black'
+                }
+              },
+          },
+          suggestedMin: -1,
+          suggestedMax: 1,
+          title: {
+            display: true,
+            text: 'Valence Axis'
+          },
+        },
+        y: {
+          grid: {
+            drawBorder: false,
+            color: (context) => {
+              if(context.tick.value === 0){
+                return 'black'
+              }
+          }
+          },
+          suggestedMin: -1,
+          suggestedMax: 1,
+          title: {
+            display: true,
+            text: 'Arousal Axis'
+        },
+        }
+      },
+      aspectRatio: 1,
+    }
+  };
+
+  new Chart(ctx, config)
+}
+
+
