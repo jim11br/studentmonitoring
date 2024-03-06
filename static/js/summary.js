@@ -29,18 +29,18 @@ new Chart(ctx2, {
       label: 'Percentage wise distribution',
       data: data.data,
       backgroundColor: [
+        'rgba(54, 162, 235, 0.8)',
         'rgba(255, 99, 132, 0.8)',
         'rgba(255, 159, 64, 0.8)',
         'rgba(255, 205, 86, 0.8)',
-        'rgba(75, 192, 192, 0.8)',
-        'rgba(54, 162, 235, 0.8)'
+        'rgba(75, 192, 192, 0.8)'
       ],
       borderColor: [
+        'rgb(54, 162, 235)',
         'rgb(255, 99, 132)',
         'rgb(255, 159, 64)',
         'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)',
-        'rgb(54, 162, 235)'
+        'rgb(75, 192, 192)'
       ],
       borderWidth: 1
     }]
@@ -131,7 +131,35 @@ $.ajax({
   type:'GET',
   url: '/calculate_fourth_component/',
   success: async (response) => {
-      console.log(response)
+
+
+      responseData = response.data;
+      for (const name in responseData) {
+        var list1 = [];
+        var list2 = [];
+
+        for (const obj of responseData[name]) {
+            var key = Object.keys(obj)[0];
+            var value = obj[key];
+
+            list1.push(key);
+            list2.push(value);
+        }
+
+        // Create for all users
+        let id = `lineChart${name}`
+        let components2 = `<div class="usersOfFourthComponent">
+                              <div class="namesOfFourthComponent"><h3>${name}</h3></div>
+                              <div class="lineChart">
+                                  <canvas id="${id}"></canvas>
+                              </div>
+                          </div>`
+        
+        document.getElementById('fourthComponent').insertAdjacentHTML('beforeend', components2)
+        createUserLineChart(id, list1, list2)  
+        
+
+      }
   },
   error: async(response) => {
       alert("No Data Found");
@@ -217,4 +245,53 @@ let createUserScatterChart = (id, uid, responseData) => {
   new Chart(ctx, config)
 }
 
+let createUserLineChart = (id, mylabels, mydata) => {
+  const ctx = document.getElementById(id);
+      const labels = mylabels;
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'Emotions',
+          data: mydata,
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      };
 
+      const customLabels = {
+        '0': 'Neutral',
+        '20': 'Hopefull',
+        '40': 'Curious',
+        '-20': 'Confused',
+        '-40': 'Bored'
+      };
+
+      const config = {
+        type: 'line',
+        data: data,
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Time Stamp'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Emotions'
+              },
+              ticks: {
+                callback: function(value) {
+                  return customLabels[value] || '';
+                }
+              }
+            }
+          }
+        }
+       
+      };
+      new Chart(ctx, config);
+}

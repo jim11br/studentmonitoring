@@ -293,8 +293,6 @@ def calculateFirstComponent(request):
     context = {'labels': labels, 'data': percentage}
     return JsonResponse(context)
 
-# def calculateSecondComponent(request):
-#     pass
 
 def calculateSecondComponent(request):        
     curious_ranking = list(Summary.objects.all().order_by('-curious').values_list('name', flat=True))
@@ -350,12 +348,9 @@ def calculateThirdComponent(request):
             student_emotion.neutral,
         ]
         rows_list.append(row_list)
-        
-    print(rows_list)
     
     
     status = Status.objects.all()
-    print(status)
     dict = {}
     for statu in status:
         values = []
@@ -373,5 +368,25 @@ def calculateThirdComponent(request):
     return JsonResponse({'rows_list': rows_list, 'data': dict})
 
 def calculateFourthComponent(request):
-    print('fourth component accessed')
-    return JsonResponse({})
+    status = Status.objects.all()
+    
+    dict = {}
+    for statu in status:
+        emotion_values = {
+            'neutral' : 0,
+            'hopefullness' : 20,
+            'curious' : 40,
+            'confusion' : -20,
+            'boredom' : -40
+        }
+        values = []
+        if statu.name not in dict.keys():
+            values = [{str(statu.time_stamp)[:8] : emotion_values[statu.predicted_emotion]}]
+            dict[statu.name] = values
+        else:
+            values = dict[statu.name]
+            values.append({str(statu.time_stamp)[:8] : emotion_values[statu.predicted_emotion]})
+            dict[statu.name] = values
+    
+            
+    return JsonResponse({'data' : dict})

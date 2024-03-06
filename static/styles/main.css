@@ -363,8 +363,21 @@ li{
 
 .usersOfFourthComponent {
     display: flex;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 1% 2%;
+    max-width: 1440px;
+    border-radius: 5px;
+    /* background: #EAF6F6; */
+    background: rgba(232, 233, 239, 1);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0, .3);
 }
 
 .namesOfFourthComponent {
     margin: auto auto;
+}
+
+.lineChart {
+    width: 40%;
+    margin: auto
 }
