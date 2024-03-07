@@ -175,7 +175,7 @@ let createUserPieChart = (id, user, labels, rows) => {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Percentage',
+        label: 'Count',
         data: rows[user].slice(2),
         borderWidth: 1
       }]
@@ -295,3 +295,9 @@ let createUserLineChart = (id, mylabels, mydata) => {
       };
       new Chart(ctx, config);
 }
+
+let downloadCsvFile = () => {
+  window.location.href = '/download_csv_file/'
+}
+
+document.getElementById('downloadButton').addEventListener('click', downloadCsvFile)

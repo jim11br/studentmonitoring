@@ -21,6 +21,10 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 from django.db.models import Sum
+from django.http import HttpResponse
+
+import csv
+
 
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -390,3 +394,17 @@ def calculateFourthComponent(request):
     
             
     return JsonResponse({'data' : dict})
+
+def downloadCsvFile(request):
+    status = Status.objects.all()
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=statusdata.csv'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'UID', 'Name', 'Time Stamp', 'Valence', 'Arousal', 'Predicted Emotion'])
+    statu = status.values_list('id','uid', 'name', 'time_stamp' , 'valence', 'arousal', 'predicted_emotion')
+    for row in statu:
+        formatted_time_stamp = str(row[3])[:8]
+        modified_row = row[:3] + (formatted_time_stamp,) + row[4:]
+        writer.writerow(modified_row)
+    return response
+    
