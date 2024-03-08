@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+import pytz
 
 # Create your models here.
 
@@ -26,8 +28,17 @@ class FaceImage(models.Model):
 
 class Status(models.Model):
     uid = models.CharField(max_length=1000)
-    emotion = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
+    time_stamp = models.TimeField(default=timezone.now)
+    valence = models.FloatField(default=0.0)
+    arousal = models.FloatField(default=0.0)
+    predicted_emotion = models.CharField(max_length=100)
     
+    def save(self, *args, **kwargs):
+        ist = pytz.timezone('Asia/Kolkata')
+        self.time_stamp = timezone.now().astimezone(ist)
+        super().save(*args, **kwargs)
+        
     def __str__(self): 
 	    return self.uid
  
@@ -45,12 +56,24 @@ class Student_Emotion(models.Model):
     
 class Summary(models.Model):
     name = models.CharField(max_length=100)
-    curious = models.CharField(max_length=5)
-    confusion = models.CharField(max_length=5)
-    boredom = models.CharField(max_length=5)
-    hopefullness = models.CharField(max_length=5)
-    neutral = models.CharField(max_length=5)
+    curious = models.FloatField(default=0.0)
+    confusion = models.FloatField(default=0.0)
+    boredom = models.FloatField(default=0.0)
+    hopefullness = models.FloatField(default=0.0)
+    neutral = models.FloatField(default=0.0)
     
     def __str__(self):
         return self.name
- 
+
+# class Ranking(models.Model):
+#     rank = models.IntegerField()
+#     curious_person = models.CharField(max_length=100)
+#     confused_person = models.CharField(max_length=100)
+#     bored_person = models.CharField(max_length=100)
+#     hopefull_person = models.CharField(max_length=100)
+#     neutral_person = models.CharField(max_length=100)
+    
+#     def __str__(self):
+#         str_rank = str(self.rank)
+#         return str_rank
+    
