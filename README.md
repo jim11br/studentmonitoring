@@ -19,9 +19,3 @@ Before running the application, make sure you have the following dependencies in
 - Python (version 3.11.5)
 - Django (version 4.2.6)
 - Agora SDK (version 4.19.1)
-
-## Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   https://github.com/innocentmchry/studentmonitoring.git
